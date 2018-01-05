@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
  * Created by rohan on 03/01/18.
  */
 
-@Entity(tableName = "users") //can add indices for indexing (faster searching)
+@Entity(tableName = "users") //can add indices for indexing (fa
 public class User {
 
     @PrimaryKey(autoGenerate = true)
