@@ -25,7 +25,7 @@ public class AppController extends Application {
         return mAppContext;
     }
 
-    public RoomDatabase getDb() {
-        return database;
+    public static AppDatabase getDb() {
+        return (AppDatabase) database;
     }
 }
