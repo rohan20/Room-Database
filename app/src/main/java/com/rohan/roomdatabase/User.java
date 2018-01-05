@@ -12,7 +12,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "users") //can add indices for indexing (fa
 public class User {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int userId;
 
     @ColumnInfo(name = "user_name")

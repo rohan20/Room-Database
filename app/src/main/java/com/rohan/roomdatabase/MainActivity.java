@@ -1,6 +1,7 @@
 package com.rohan.roomdatabase;
 
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,8 +23,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        mUsersList = AppController.getDb().userDao().getAllUsers() == null ?
-                new ArrayList<User>() : AppController.getDb().userDao().getAllUsers();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                mUsersList = AppController.getInstance(MainActivity.this).userDao().getAllUsers() == null ?
+                        new ArrayList<User>() : AppController.getInstance(MainActivity.this).userDao().getAllUsers();
+            }
+        });
 
         mAdapter = new UsersAdapter(mUsersList, this);
         mBinding.rvDbItems.setAdapter(mAdapter);
@@ -38,19 +44,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insert() {
-        User user = new User();
-        user.setUserFullName("Lionel Messi");
+        final User user = new User();
+        user.setUserId(1);
+        user.setUserFullName(mBinding.etEnterText.getText().toString().trim());
         user.setUserImage(R.drawable.ic_android_black_24dp);
-        user.setUserName("Messi");
+        user.setUserName(user.getUserFullName().substring(0, 1));
 
-        int userIdAdded = AppController.getDb().userDao().insert(user);
-        mUsersList.add(AppController.getDb().userDao().getUser(userIdAdded));
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                long userIdAdded = AppController.getInstance(MainActivity.this).userDao().insert(user);
+                mUsersList.add(AppController.getInstance(MainActivity.this).userDao().getUser((int) userIdAdded));
+            }
+        });
 
         updateAdapter();
     }
 
     private void updateAdapter() {
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         mAdapter.notifyDataSetChanged();
+        Toast.makeText(this, "Count: " + mAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
     }
 }

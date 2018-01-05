@@ -24,7 +24,7 @@ public interface UserDao {
     User getUser(int userId);
 
     @Insert
-    int insert(User user); //return id of the user added
+    long insert(User user); //return id of the user added
 //    void insert(User user);
 
     @Insert

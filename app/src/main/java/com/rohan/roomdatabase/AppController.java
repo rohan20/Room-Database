@@ -11,21 +11,18 @@ import android.content.Context;
 
 public class AppController extends Application {
 
-    private static Context mAppContext;
-    private static RoomDatabase database;
+    private static final String DB_NAME = "App-Database";
+    private static AppDatabase database;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mAppContext = this.getApplicationContext();
-        database = Room.databaseBuilder(this, AppDatabase.class, "App-Database").build();
+    public static synchronized AppDatabase getInstance(Context context){
+        if(database == null)
+            database = createDatabase(context);
+
+        return database;
     }
 
-    public static Context getApp() {
-        return mAppContext;
+    private static AppDatabase createDatabase(Context context) {
+        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).build();
     }
 
-    public static AppDatabase getDb() {
-        return (AppDatabase) database;
-    }
 }
