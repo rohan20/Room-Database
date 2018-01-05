@@ -20,8 +20,12 @@ public interface UserDao {
     @Query("SELECT * FROM users WHERE user_name like :username")
     List<User> getAllUsers(String username);
 
+    @Query("SELECT * FROM users WHERE userId like :userId")
+    User getUser(int userId);
+
     @Insert
-    void insert(User user);
+    int insert(User user); //return id of the user added
+//    void insert(User user);
 
     @Insert
     void insertAll(List<User> users);
