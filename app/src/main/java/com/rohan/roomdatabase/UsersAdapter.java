@@ -1,6 +1,7 @@
 package com.rohan.roomdatabase;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.rohan.roomdatabase.R;
 import com.rohan.roomdatabase.User;
+import com.rohan.roomdatabase.databinding.ItemUserBinding;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  * Created by rohan on 05/01/18.
  */
 public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
+    
     private final Context context;
     private List<User> items;
 
@@ -26,9 +29,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
     @Override
     public UsersViewHolder onCreateViewHolder(ViewGroup parent,
                                               int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_user, parent, false);
-        return new UsersViewHolder(v);
+
+        ItemUserBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_user, parent, false);
+        return new UsersViewHolder(binding);
     }
 
     @Override
