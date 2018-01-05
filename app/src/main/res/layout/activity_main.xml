@@ -6,7 +6,38 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="8dp"
         tools:context="com.rohan.roomdatabase.MainActivity">
+
+        <EditText
+            android:id="@+id/et_enter_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter text here..."
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/b_insert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Insert"
+            android:onClick="buttonClicked"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_enter_text" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_db_items"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/b_insert" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
