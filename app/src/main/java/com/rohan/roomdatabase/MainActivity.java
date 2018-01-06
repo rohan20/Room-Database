@@ -1,9 +1,12 @@
 package com.rohan.roomdatabase;
 
+import android.database.sqlite.SQLiteConstraintException;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private UsersAdapter mAdapter;
     private List<User> mUsersList;
 
+    //TODO add delete method
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +31,30 @@ public class MainActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                mUsersList = AppController.getInstance(MainActivity.this).userDao().getAllUsers() == null ?
-                        new ArrayList<User>() : AppController.getInstance(MainActivity.this).userDao().getAllUsers();
+                Log.v("db items count: ", AppController.getInstance(getApplicationContext()).userDao().getAllUsers().size() + "");
+                mUsersList = AppController.getInstance(MainActivity.this).userDao().getAllUsers();
+
+                if (mUsersList == null)
+                    mUsersList = new ArrayList<>();
+
+                Log.v("size: ", mUsersList.size() + "");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupRecyclerView();
+                    }
+                });
             }
         });
 
+
+    }
+
+    private void setupRecyclerView() {
         mAdapter = new UsersAdapter(mUsersList, this);
+        mBinding.rvDbItems.setHasFixedSize(true);
+        mBinding.rvDbItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mBinding.rvDbItems.setAdapter(mAdapter);
     }
 
@@ -45,20 +68,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void insert() {
         final User user = new User();
-        user.setUserId(1);
-        user.setUserFullName(mBinding.etEnterText.getText().toString().trim());
+        user.setUserId(Integer.parseInt(mBinding.etEnterUserId.getText().toString().trim()));
+        user.setUserName(mBinding.etFullname.getText().toString().trim());
+        user.setUserFullName(mBinding.etUsername.getText().toString().trim());
         user.setUserImage(R.drawable.ic_android_black_24dp);
-        user.setUserName(user.getUserFullName().substring(0, 1));
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                long userIdAdded = AppController.getInstance(MainActivity.this).userDao().insert(user);
-                mUsersList.add(AppController.getInstance(MainActivity.this).userDao().getUser((int) userIdAdded));
+                try {
+                    long userIdAdded = AppController.getInstance(MainActivity.this).userDao().insert(user);
+                    mUsersList.add(AppController.getInstance(MainActivity.this).userDao().getUser((int) userIdAdded));
+                    Log.v("size after adding: ", mUsersList.size() + "");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateAdapter();
+                        }
+                    });
+                } catch (SQLiteConstraintException e) {
+                    Log.v("Adding user: ", e.getMessage());
+                }
+
             }
         });
 
-        updateAdapter();
     }
 
     private void updateAdapter() {

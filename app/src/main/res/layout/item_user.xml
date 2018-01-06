@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="@{user.userName}"
             android:textSize="22sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
             tools:text="Messi" />

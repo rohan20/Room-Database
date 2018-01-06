@@ -22,7 +22,7 @@ public class User {
     private int userImage;
 
     //If an entity has fields that you don't want to persist, you can annotate them using @Ignore
-    @Ignore
+    @ColumnInfo(name = "user_fullname")
     private String userFullName;
 
 

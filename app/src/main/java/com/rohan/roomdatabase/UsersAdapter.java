@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
-    private final Context context;
+    private Context context;
     private List<User> usersList;
 
     public UsersAdapter(List<User> usersList, Context context) {
@@ -24,8 +24,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
     }
 
     @Override
-    public UsersViewHolder onCreateViewHolder(ViewGroup parent,
-                                              int viewType) {
+    public UsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemUserBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_user, parent, false);
         return new UsersViewHolder(binding);
     }
