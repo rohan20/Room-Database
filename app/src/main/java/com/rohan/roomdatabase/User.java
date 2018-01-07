@@ -25,7 +25,6 @@ public class User {
     @ColumnInfo(name = "user_fullname")
     private String userFullName;
 
-
     public int getUserId() {
         return userId;
     }
